@@ -2,7 +2,7 @@
 
 ## Como usar
 
-1. Fazer download do ficheiro executável ou do código fonte e das pastas de testes;
+1. Fazer download do [ficheiro executável](https://github.com/ArmindoFlores/AirRoutesUT/releases/download/v1.0/UnitTests.exe) ou do código fonte e das pastas de testes;
 2. Executar o programa;
 3. Selecionar o ficheiro executável, a pasta com os testes e a pasta com as soluções;
 4. É gerado o ficheir `results.txt` que indica os erros que ocorreram; 
