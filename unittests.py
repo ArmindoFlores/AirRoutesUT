@@ -39,9 +39,9 @@ def test(exe, tdir, sdir, use_wsl):
     
     if use_wsl: 
         try:
-            b_path = subprocess.check_output([wsl, "wslpath", "-a", exe]).decode().strip()
-            t_path = subprocess.check_output([wsl, "wslpath", "-a", tdir]).decode().strip()
-            s_path = subprocess.check_output([wsl, "wslpath", "-a", sdir]).decode().strip()
+            b_path = subprocess.check_output([wsl, "wslpath", "-a", exe], shell=True).decode().strip()
+            t_path = subprocess.check_output([wsl, "wslpath", "-a", tdir], shell=True).decode().strip()
+            s_path = subprocess.check_output([wsl, "wslpath", "-a", sdir], shell=True).decode().strip()
         except subprocess.CalledProcessError:
             print_error("Error: Couldn't run WSL. Try disabling that option if you're using a Linux machine.")
             return
@@ -65,11 +65,13 @@ def test(exe, tdir, sdir, use_wsl):
         error = ""
         try:
             if use_wsl:
-                result = subprocess.check_output([wsl, b_path, file_path], 
-                                                stderr=subprocess.PIPE)
+                result = subprocess.check_output([wsl, b_path, file_path],
+                                                 shell=True, 
+                                                 stderr=subprocess.PIPE)
             else:
                 result = subprocess.check_output([b_path, file_path], 
-                                                stderr=subprocess.PIPE)
+                                                 shell=True,
+                                                 stderr=subprocess.PIPE)
         except OSError:
             print_error("Couldn't run the executable. Try enabling the WSL option if you're not running in a Linux machine.")
             return
@@ -94,10 +96,12 @@ def test(exe, tdir, sdir, use_wsl):
             try:
                 if use_wsl:
                     subprocess.check_output([wsl, "diff", f"{t_path}/{file}.queries", f"{s_path}/{file}.queries"],
+                                            shell=True,
                                             stderr=subprocess.PIPE)
                 else:
                     subprocess.check_output(["diff", f"{t_path}/{file}.queries", f"{s_path}/{file}.queries"],
-                                        stderr=subprocess.PIPE)
+                                            shell=True,
+                                            stderr=subprocess.PIPE)
             except subprocess.CalledProcessError as e:
                 save.write(f"{file}.routes0:")
                 save.write(e.output.decode())
@@ -114,7 +118,7 @@ def test(exe, tdir, sdir, use_wsl):
        tabbed_groups=True,
        progress_regex=r"^Progress: (?P<current>\d+)/(?P<total>\d+)$",
        progress_expr="current / total * 100",
-       hide_progress_msg=True,
+       hide_progress_msg=False,
        richtext_controls=True)
 def main():
     import os
